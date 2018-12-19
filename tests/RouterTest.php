@@ -3,8 +3,8 @@
 namespace Test;
 
 use GuzzleHttp\Psr7\ServerRequest;
+use Hypario\Router;
 use PHPUnit\Framework\TestCase;
-use Router\Router;
 
 class RouterTest extends TestCase
 {
