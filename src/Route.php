@@ -4,7 +4,6 @@ namespace Hypario;
 
 class Route
 {
-
     /**
      * @var string
      */
@@ -27,8 +26,9 @@ class Route
 
     /**
      * Route constructor.
-     * @param string $pattern
-     * @param callable $callable
+     *
+     * @param string      $pattern
+     * @param callable    $callable
      * @param string|null $name
      */
     public function __construct(string $pattern, callable $callable, ?string $name = null)
@@ -79,8 +79,9 @@ class Route
         $i = 0;
         foreach ($this->params as $key => $value) {
             $this->params[$key] = $matches[$i];
-            $i++;
+            ++$i;
         }
+
         return true;
     }
 
@@ -92,6 +93,7 @@ class Route
         $this->params[$name] = null;
         $regex = $params[1];
         $regex = str_replace('(', '(?:', $regex);
+
         return '(' . $regex . ')';
     }
 }
