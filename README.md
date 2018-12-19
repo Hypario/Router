@@ -37,7 +37,8 @@ Carefull ! those methods doesn't mean you can reach those pages, now you have to
 $router = new Hypario\Router();
 $router->get('/', function () { echo "Hello World"; });
 
-$route = $router->match($_SERVER['REQUEST_URI']) // It will return the route that matched the pattern you decided, here '/', null if none matched
+$route = $router->match($_SERVER['REQUEST_URI']);
+// It will return the route that matched the pattern you decided, here '/', null if none matched
 ```
 here `$_SERVER['REQUEST_URI']` is used to get the URL, but you can use an object that implement the ServerRequestInterface from the PSR or a custom $_GET that give the URL
 
