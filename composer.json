@@ -1,0 +1,22 @@
+{
+    "name": "hypario/router",
+    "authors": [
+        {
+            "name": "Fabien Duterte",
+            "email": "fabienduterte@orange.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Router\\": "src",
+            "Test\\": "tests"
+        }
+    },
+    "require": {
+    },
+    "require-dev": {
+        "http-interop/response-sender": "^1.0",
+        "guzzlehttp/psr7": "^1.5",
+        "phpunit/phpunit": "^7.5"
+    }
+}
