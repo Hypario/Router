@@ -1,5 +1,7 @@
 # A simple Router
 
+[![Build Status](https://travis-ci.org/Hypario/Router.svg?branch=master)](https://travis-ci.org/Hypario/Router)
+
 This Router is a project for people who wants to understand how a router works and it can be used to start a project really quickly without using any Framework such as Laravel or Symfony
 
 ## Installation
