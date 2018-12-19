@@ -128,8 +128,7 @@ class Router
     {
         $param = str_replace('}', '', str_replace('{', '', $match[0]));
         $parts = explode(':', $param);
-        if (
-            array_key_exists($parts[0], $this->pathParams)
+        if (array_key_exists($parts[0], $this->pathParams)
             && preg_match("#$parts[1]#i", $this->pathParams[$parts[0]])
         ) {
             return $this->pathParams[$parts[0]];
@@ -137,6 +136,4 @@ class Router
             throw new \Exception("Parameters sent does not match the pattern");
         }
     }
-
-
 }

@@ -111,5 +111,4 @@ class RouterTest extends TestCase
         );
         $this->assertEquals('/blog/mon-article-18?p=2', $uri);
     }
-
 }

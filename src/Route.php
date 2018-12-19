@@ -77,7 +77,7 @@ class Route
         }
         array_shift($matches);
         $i = 0;
-        foreach($this->params as $key => $value) {
+        foreach ($this->params as $key => $value) {
             $this->params[$key] = $matches[$i];
             $i++;
         }
@@ -94,5 +94,4 @@ class Route
         $regex = str_replace('(', '(?:', $regex);
         return '(' . $regex . ')';
     }
-
 }
