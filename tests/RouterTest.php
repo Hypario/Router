@@ -34,13 +34,23 @@ class RouterTest extends TestCase
     public function testPostMethod()
     {
         $request = new ServerRequest('POST', '/blog');
-        $this->router->get('/blog', function () {}, 'getBlog');
+        $this->router->get('/blog', function () {
+        }, 'getBlog');
         $this->router->post('/blog', function () {
             return 'Hello World !';
         }, 'postBlog');
         $route = $this->router->match($request);
         $this->assertSame('postBlog', $route->getName());
         $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+    }
+
+    public function testRouteAlreadyExist()
+    {
+        $this->router->get('/blog', function () {
+        }, 'blog');
+        $this->expectException(\Exception::class);
+        $this->router->get('/aze', function () {
+        }, 'blog');
     }
 
     public function testMatchMethod()
@@ -51,13 +61,12 @@ class RouterTest extends TestCase
         // with a string as url
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $route = $this->router->match('/blog');
-        $this->assertSame('Hello World !', call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
 
         // with an object that implement the ServerRequestInterface
         $request = new ServerRequest('GET', '/blog');
         $route = $this->router->match($request);
-        $this->assertSame('Hello World !', call_user_func($route->getCallable()));
-
+        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
     }
 
     public function testIfUrlDoesNotExist()
@@ -111,16 +120,19 @@ class RouterTest extends TestCase
         );
         $this->assertSame('/blog/mon-article-18', $uri);
 
-        $uri = $this->router->getPath('post.show',
-            ['id' => 18, 'slug' => 'mon-article']);
+        $uri = $this->router->getPath(
+            'post.show',
+            ['id' => 18, 'slug' => 'mon-article']
+        );
         $this->assertSame('/blog/mon-article-18', $uri);
 
         // test with queryParams
-        $uri = $this->router->getPath('post.show',
+        $uri = $this->router->getPath(
+            'post.show',
             ['slug' => 'mon-article', 'id' => 18],
-            ['p' => 2]);
+            ['p'    => 2]
+        );
         $this->assertSame('/blog/mon-article-18?p=2', $uri);
-
     }
 
     public function testGenerateUriWithFalseParameters()
@@ -136,5 +148,4 @@ class RouterTest extends TestCase
         $this->expectException(\Exception::class);
         $this->router->getPath('azeaze', ['azeaze' => 'azeaze']);
     }
-
 }
