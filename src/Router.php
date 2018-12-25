@@ -12,8 +12,10 @@ class Router
      * @var array
      */
     private $routes = [
-        'GET'  => [],
-        'POST' => []
+        'GET'    => [],
+        'POST'   => [],
+        'PUT'    => [],
+        'DELETE' => []
     ];
 
     /**
@@ -55,6 +57,26 @@ class Router
     }
 
     /**
+     * @param string      $pattern
+     * @param callable    $callable
+     * @param string|null $name
+     */
+    public function put(string $pattern, callable $callable, ?string $name = null): void
+    {
+        $this->addRoute('PUT', $pattern, $callable, $name);
+    }
+
+    /**
+     * @param string      $pattern
+     * @param callable    $callable
+     * @param string|null $name
+     */
+    public function delete(string $pattern, callable $callable, ?string $name = null): void
+    {
+        $this->addRoute('DELETE', $pattern, $callable, $name);
+    }
+
+    /**
      * Return the route that matched or null if none matched.
      *
      * @param $request
@@ -72,11 +94,15 @@ class Router
         } else {
             throw new \Exception('The request is not a string or an instance of ServerRequestInterface');
         }
-        /** @var Route $route */
-        foreach ($this->routes[$method] as $route) {
-            if ($route->match($url)) {
-                return $route;
+        if (array_key_exists($method, $this->routes)) {
+            /** @var Route $route */
+            foreach ($this->routes[$method] as $route) {
+                if ($route->match($url)) {
+                    return $route;
+                }
             }
+        } else {
+            throw new \Exception('Method not found');
         }
 
         return null;

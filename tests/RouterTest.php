@@ -44,6 +44,32 @@ class RouterTest extends TestCase
         $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
     }
 
+    public function testPutMethod()
+    {
+        $request = new ServerRequest('PUT', '/blog');
+        $this->router->get('/blog', function () {
+        }, 'getBlog');
+        $this->router->put('/blog', function () {
+            return 'Hello World !';
+        }, 'postBlog');
+        $route = $this->router->match($request);
+        $this->assertSame('postBlog', $route->getName());
+        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+    }
+
+    public function testDeleteMethod()
+    {
+        $request = new ServerRequest('DELETE', '/blog');
+        $this->router->get('/blog', function () {
+        }, 'getBlog');
+        $this->router->delete('/blog', function () {
+            return 'Hello World !';
+        }, 'postBlog');
+        $route = $this->router->match($request);
+        $this->assertSame('postBlog', $route->getName());
+        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+    }
+
     public function testRouteAlreadyExist()
     {
         $this->router->get('/blog', function () {
@@ -147,5 +173,14 @@ class RouterTest extends TestCase
 
         $this->expectException(\Exception::class);
         $this->router->getPath('azeaze', ['azeaze' => 'azeaze']);
+    }
+
+    public function testWrongMethod()
+    {
+        $request = new ServerRequest('AZEAZE', '/');
+        $this->router->get('/', function () {
+        });
+        $this->expectException(\Exception::class);
+        $this->router->match($request);
     }
 }
