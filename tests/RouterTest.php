@@ -95,6 +95,12 @@ class RouterTest extends TestCase
         $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
     }
 
+    public function testMatchMethodWithBadRequest()
+    {
+        $this->expectException(\Exception::class);
+        $this->router->match([]);
+    }
+
     public function testIfUrlDoesNotExist()
     {
         // Test with GET Method
@@ -170,16 +176,17 @@ class RouterTest extends TestCase
             'post.show',
             ['azeaze' => 'azeaze']
         );
+    }
 
+    public function testGenerateUriWithBadName()
+    {
         $this->expectException(\Exception::class);
-        $this->router->getPath('azeaze', ['azeaze' => 'azeaze']);
+        $this->router->getPath('azeaze');
     }
 
     public function testWrongMethod()
     {
         $request = new ServerRequest('AZEAZE', '/');
-        $this->router->get('/', function () {
-        });
         $this->expectException(\Exception::class);
         $this->router->match($request);
     }
