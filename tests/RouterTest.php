@@ -28,7 +28,7 @@ class RouterTest extends TestCase
         }, 'postBlog');
         $route = $this->router->match($request);
         $this->assertSame('blog', $route->getName());
-        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
     }
 
     public function testPostMethod()
@@ -41,7 +41,7 @@ class RouterTest extends TestCase
         }, 'postBlog');
         $route = $this->router->match($request);
         $this->assertSame('postBlog', $route->getName());
-        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
     }
 
     public function testPutMethod()
@@ -54,7 +54,7 @@ class RouterTest extends TestCase
         }, 'postBlog');
         $route = $this->router->match($request);
         $this->assertSame('postBlog', $route->getName());
-        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
     }
 
     public function testDeleteMethod()
@@ -67,7 +67,7 @@ class RouterTest extends TestCase
         }, 'postBlog');
         $route = $this->router->match($request);
         $this->assertSame('postBlog', $route->getName());
-        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
     }
 
     public function testRouteAlreadyExist()
@@ -87,12 +87,12 @@ class RouterTest extends TestCase
         // with a string as url
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $route = $this->router->match('/blog');
-        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
 
         // with an object that implement the ServerRequestInterface
         $request = new ServerRequest('GET', '/blog');
         $route = $this->router->match($request);
-        $this->assertSame('Hello World !', \call_user_func($route->getCallable()));
+        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
     }
 
     public function testMatchMethodWithBadRequest()
@@ -126,7 +126,7 @@ class RouterTest extends TestCase
 
         $route = $this->router->match($request);
         $this->assertSame('post.show', $route->getName());
-        $this->assertSame('hello', \call_user_func($route->getCallable()));
+        $this->assertSame('hello', \call_user_func($route->getHandler()));
         $this->assertSame(['slug' => 'mon-slug', 'id' => '8'], $route->getParams());
 
         // Test invalid url with parameters

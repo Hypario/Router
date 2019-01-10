@@ -28,7 +28,7 @@ class Route
      * Route constructor.
      *
      * @param string      $pattern
-     * @param mixed    $handler
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function __construct(string $pattern, $handler, ?string $name = null)

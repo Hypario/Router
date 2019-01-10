@@ -12,9 +12,9 @@ class Router
      * @var array
      */
     private $routes = [
-        'GET' => [],
-        'POST' => [],
-        'PUT' => [],
+        'GET'    => [],
+        'POST'   => [],
+        'PUT'    => [],
         'DELETE' => []
     ];
 
@@ -35,8 +35,8 @@ class Router
     /**
      * Add a route in GET method.
      *
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function get(string $pattern, $handler, ?string $name = null): void
@@ -47,8 +47,8 @@ class Router
     /**
      * Add a route in POST method.
      *
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function post(string $pattern, $handler, ?string $name = null): void
@@ -57,8 +57,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function put(string $pattern, $handler, ?string $name = null): void
@@ -67,8 +67,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function delete(string $pattern, $handler, ?string $name = null): void
@@ -110,8 +110,8 @@ class Router
 
     /**
      * @param string $name
-     * @param array $params
-     * @param array $queryParams
+     * @param array  $params
+     * @param array  $queryParams
      *
      * @throws \Exception
      *
@@ -139,9 +139,9 @@ class Router
     /**
      * The function that add the route in the method chosen.
      *
-     * @param string $method
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $method
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      *
      * @throws \Exception
