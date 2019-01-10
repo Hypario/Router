@@ -10,9 +10,9 @@ class Route
     private $pattern;
 
     /**
-     * @var callable
+     * @var mixed
      */
-    private $callable;
+    private $handler;
 
     /**
      * @var string
@@ -28,13 +28,13 @@ class Route
      * Route constructor.
      *
      * @param string      $pattern
-     * @param callable    $callable
+     * @param mixed    $handler
      * @param string|null $name
      */
-    public function __construct(string $pattern, callable $callable, ?string $name = null)
+    public function __construct(string $pattern, $handler, ?string $name = null)
     {
         $this->pattern = trim($pattern, '/');
-        $this->callable = $callable;
+        $this->handler = $handler;
         $this->name = $name;
     }
 
@@ -47,11 +47,11 @@ class Route
     }
 
     /**
-     * @return callable
+     * @return mixed
      */
-    public function getCallable(): callable
+    public function getHandler()
     {
-        return $this->callable;
+        return $this->handler;
     }
 
     /**

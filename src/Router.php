@@ -12,9 +12,9 @@ class Router
      * @var array
      */
     private $routes = [
-        'GET'    => [],
-        'POST'   => [],
-        'PUT'    => [],
+        'GET' => [],
+        'POST' => [],
+        'PUT' => [],
         'DELETE' => []
     ];
 
@@ -35,45 +35,45 @@ class Router
     /**
      * Add a route in GET method.
      *
-     * @param string      $pattern
-     * @param callable    $callable
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
-    public function get(string $pattern, callable $callable, ?string $name = null): void
+    public function get(string $pattern, $handler, ?string $name = null): void
     {
-        $this->addRoute('GET', $pattern, $callable, $name);
+        $this->addRoute('GET', $pattern, $handler, $name);
     }
 
     /**
      * Add a route in POST method.
      *
-     * @param string      $pattern
-     * @param callable    $callable
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
-    public function post(string $pattern, callable $callable, ?string $name = null): void
+    public function post(string $pattern, $handler, ?string $name = null): void
     {
-        $this->addRoute('POST', $pattern, $callable, $name);
+        $this->addRoute('POST', $pattern, $handler, $name);
     }
 
     /**
-     * @param string      $pattern
-     * @param callable    $callable
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
-    public function put(string $pattern, callable $callable, ?string $name = null): void
+    public function put(string $pattern, $handler, ?string $name = null): void
     {
-        $this->addRoute('PUT', $pattern, $callable, $name);
+        $this->addRoute('PUT', $pattern, $handler, $name);
     }
 
     /**
-     * @param string      $pattern
-     * @param callable    $callable
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
-    public function delete(string $pattern, callable $callable, ?string $name = null): void
+    public function delete(string $pattern, $handler, ?string $name = null): void
     {
-        $this->addRoute('DELETE', $pattern, $callable, $name);
+        $this->addRoute('DELETE', $pattern, $handler, $name);
     }
 
     /**
@@ -110,8 +110,8 @@ class Router
 
     /**
      * @param string $name
-     * @param array  $params
-     * @param array  $queryParams
+     * @param array $params
+     * @param array $queryParams
      *
      * @throws \Exception
      *
@@ -139,16 +139,16 @@ class Router
     /**
      * The function that add the route in the method chosen.
      *
-     * @param string      $method
-     * @param string      $pattern
-     * @param callable    $callable
+     * @param string $method
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      *
      * @throws \Exception
      */
-    private function addRoute(string $method, string $pattern, callable $callable, ?string $name = null)
+    private function addRoute(string $method, string $pattern, $handler, ?string $name = null)
     {
-        $this->routes[$method][$pattern] = new Route($pattern, $callable, $name);
+        $this->routes[$method][$pattern] = new Route($pattern, $handler, $name);
         if (null !== $name && !array_key_exists($name, $this->namedRoute)) {
             $this->namedRoute[$name] = $this->routes[$method][$pattern];
         } elseif (null !== $name && array_key_exists($name, $this->namedRoute)) {

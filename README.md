@@ -24,7 +24,7 @@ Like every other Router you have to intialize the Router, and write the routes y
 
 ```php
 $router = new Hypario\Router(); // Here no parameters needed
-$router->get('/', function () { echo "Hello World"; }); // Define a route in GET method, when called will call the function in second parameter
+$router->get('/', function () { echo "Hello World"; }); // Define a route in GET method.
 ```
 
 There are other method you can choose such as the POST method
@@ -36,16 +36,18 @@ $router->post('/', function () { echo "Route accessed via POST method"; });
 
 Carefull ! those methods doesn't mean you can reach those pages, now you have to match your URL and the routes
 
+# How to match the URL and the route
+
+To match the route you have to use the match method from the router, it will return the route or null if none matched
 ```php
 $router = new Hypario\Router();
 $router->get('/', function () { echo "Hello World"; });
 
 $route = $router->match($_SERVER['REQUEST_URI']);
-// It will return the route that matched the pattern you decided, here '/', null if none matched
 ```
 here `$_SERVER['REQUEST_URI']` is used to get the URL, but you can use an object that implement the ServerRequestInterface from the PSR or a custom $_GET that give the URL
 
-When you get the matched route, you can get the function and call it
+When you get the matched route, you can get the handler (here the function).
 ```php
 $router = new Hypario\Router();
 $router->get('/', function () { echo "Hello World"; });
@@ -53,11 +55,26 @@ $router->get('/', function () { echo "Hello World"; });
 $route = $router->match($_SERVER['REQUEST_URI']); // We get the matched route
 
 if (!is_null($route)) {
-    $function = $route->getCallable(); // We get the function
+    $function = $route->getHandler(); // We get the function
     call_user_func($function); // We call the function of the matched route
 }
 ```
 output : `Hello World` if the url is simply the main page of your website `www.mydomain.com`
+
+The handler can be a string (like the name of a callable class) or a callable (like here, a function).
+For example:
+```php
+$router = new Hypario\Router();
+$router->get('/', Index::class);
+
+$route = $router->match($_SERVER['REQUEST_URI']);
+
+if (!is_null($route)) {
+    $class = $route->getHandler()(); // we initialize the class (possible if the class doesn't have any parameters in the constructor)
+    // or it can be $callable = $container->get($route->getHandler()); if you have a container like PHP-DI
+    call_user_fun($class); // possible if the class is callable (have the __invoke method)
+}
+```
 
 # complex pattern for routes
 
