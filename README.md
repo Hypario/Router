@@ -72,7 +72,7 @@ $route = $router->match($_SERVER['REQUEST_URI']);
 if (!is_null($route)) {
     $class = $route->getHandler()(); // we initialize the class (possible if the class doesn't have any parameters in the constructor)
     // or it can be $callable = $container->get($route->getHandler()); if you have a container like PHP-DI
-    call_user_fun($class); // possible if the class is callable (have the __invoke method)
+    call_user_func($class); // possible if the class is callable (have the __invoke method)
 }
 ```
 

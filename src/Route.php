@@ -70,7 +70,11 @@ class Route
     public function match(string $url): bool
     {
         $url = trim($url, '/');
-        $pattern = preg_replace_callback('/{([a-zA-Z]+):([A-Za-z0-9_\-\[\]\{\}\|\\\+\*\?]+)}+?/', [$this, 'paramMatch'], $this->pattern);
+        $pattern = preg_replace_callback(
+            '/{([a-zA-Z]+):([A-Za-z0-9_\-\[\]\{\}\|\\\+\*\?]+)}+?/',
+            [$this, 'paramMatch'],
+            $this->pattern
+        );
         $regex = "#^$pattern$#";
         if (!preg_match($regex, $url, $matches)) {
             return false;

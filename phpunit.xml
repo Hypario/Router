@@ -8,9 +8,9 @@
     <filter>
         <whitelist>
             <directory>src</directory>
-            <exlude>
+            <exclude>
                 <directory>tests</directory>
-            </exlude>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
