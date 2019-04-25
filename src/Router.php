@@ -113,8 +113,6 @@ class Router
      * @param array  $params
      * @param array  $queryParams
      *
-     * @throws \Exception
-     *
      * @return string
      */
     public function getPath(string $name, array $params = [], array $queryParams = []): string
@@ -133,7 +131,7 @@ class Router
 
             return $path;
         }
-        throw new \Exception('No route matched that name.');
+        $this->notFound();
     }
 
     /**
@@ -173,5 +171,13 @@ class Router
             return $this->pathParams[$parts[0]];
         }
         throw new \Exception('Parameters sent does not match the pattern');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function notFound()
+    {
+        throw new \Exception('No route matched that name.');
     }
 }
