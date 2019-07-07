@@ -81,9 +81,11 @@ class Router
      *
      * @param $request
      *
+     * @throws \Exception
+     *
      * @return Route|null
      */
-    public function match($request): ?Route
+    public function match(&$request): ?Route
     {
         if ($request instanceof ServerRequestInterface) {
             $url = $request->getUri()->getPath();
@@ -100,9 +102,10 @@ class Router
                 if ($route->match($url)) {
                     if ($request instanceof ServerRequestInterface) {
                         foreach ($route->getParams() as $key => $value) {
-                            $request->withAttribute($key, $value);
+                            $request = $request->withAttribute($key, $value);
                         }
                     }
+
                     return $route;
                 }
             }
@@ -115,10 +118,11 @@ class Router
 
     /**
      * @param string $name
-     * @param array  $params
-     * @param array  $queryParams
+     * @param array $params
+     * @param array $queryParams
      *
      * @return string
+     * @throws \Exception
      */
     public function getPath(string $name, array $params = [], array $queryParams = []): string
     {
@@ -136,7 +140,7 @@ class Router
 
             return $path;
         }
-        $this->notFound();
+        throw new \Exception('No route matched that name.');
     }
 
     /**
@@ -176,13 +180,5 @@ class Router
             return $this->pathParams[$parts[0]];
         }
         throw new \Exception('Parameters sent does not match the pattern');
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function notFound()
-    {
-        throw new \Exception('No route matched that name.');
     }
 }

@@ -5,6 +5,7 @@ namespace Test;
 use GuzzleHttp\Psr7\ServerRequest;
 use Hypario\Router;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RouterTest extends TestCase
 {
@@ -84,21 +85,27 @@ class RouterTest extends TestCase
         $this->router->get('/blog', function () {
             return 'Hello World !';
         });
+        $this->router->get('/blog/{slug:[a-z]+}', function ($request) {
+            /* @var ServerRequestInterface $request */
+            return $request->getAttribute('slug');
+        });
         // with a string as url
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $route = $this->router->match('/blog');
+        $_SERVER['REQUEST_URI'] = '/blog';
+        $route = $this->router->match($_SERVER['REQUEST_URI']);
         $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
 
         // with an object that implement the ServerRequestInterface
-        $request = new ServerRequest('GET', '/blog');
+        $request = new ServerRequest('GET', '/blog/aze');
         $route = $this->router->match($request);
-        $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
+        $this->assertSame('aze', \call_user_func_array($route->getHandler(), [$request]));
     }
 
     public function testMatchMethodWithBadRequest()
     {
         $this->expectException(\Exception::class);
-        $this->router->match([]);
+        $request = [];
+        $this->router->match($request);
     }
 
     public function testIfUrlDoesNotExist()
@@ -130,7 +137,8 @@ class RouterTest extends TestCase
         $this->assertSame(['slug' => 'mon-slug', 'id' => '8'], $route->getParams());
 
         // Test invalid url with parameters
-        $route = $this->router->match(new ServerRequest('GET', '/blog/mon_slug-8'));
+        $request = new ServerRequest('GET', '/blog/mon_slug-8');
+        $route = $this->router->match($request);
         $this->assertNull($route);
     }
 
