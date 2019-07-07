@@ -118,11 +118,12 @@ class Router
 
     /**
      * @param string $name
-     * @param array $params
-     * @param array $queryParams
+     * @param array  $params
+     * @param array  $queryParams
+     *
+     * @throws \Exception
      *
      * @return string
-     * @throws \Exception
      */
     public function getPath(string $name, array $params = [], array $queryParams = []): string
     {
