@@ -98,6 +98,11 @@ class Router
             /** @var Route $route */
             foreach ($this->routes[$method] as $route) {
                 if ($route->match($url)) {
+                    if ($request instanceof ServerRequestInterface) {
+                        foreach ($route->getParams() as $key => $value) {
+                            $request->withAttribute($key, $value);
+                        }
+                    }
                     return $route;
                 }
             }
