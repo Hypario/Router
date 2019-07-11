@@ -61,20 +61,7 @@ if (!is_null($route)) {
 ```
 output : `Hello World` if the url is simply the main page of your website `www.mydomain.com`
 
-The handler can be a string (like the name of a callable class) or a callable (like here, a function).
-For example:
-```php
-$router = new Hypario\Router();
-$router->get('/', Index::class);
-
-$route = $router->match($_SERVER['REQUEST_URI']);
-
-if (!is_null($route)) {
-    $class = $route->getHandler()(); // we initialize the class (possible if the class doesn't have any parameters in the constructor)
-    // or it can be $callable = $container->get($route->getHandler()); if you have a container like PHP-DI
-    call_user_func($class); // possible if the class is callable (have the __invoke method)
-}
-```
+The handler can be a string (like the name of a callable class) or a callable (like here, a function) as the router do not handle the way you're calling the handler.
 
 # complex pattern for routes
 
@@ -84,6 +71,12 @@ Every parameter must be surrounded by brackets and separated by `:`.
 
 ```php
 $router->get('/hello/{name:[a-z]+}', function($name) { echo "Hello $name";});
+$route = $router->match($_SERVER['REQUEST_URI']);
+
+if (!is_null($route)) {
+    $function = $route->getHandler();
+    call_user_func_array($function, $route->getParams());
+}
 ```
 The first part (here name) is the name of the variable, and the second part is the pattern to match for the part after `/hello/`.
-The variable will be passed as a parameter to the function.
+The variable will be passed as a parameter to the function because of the $route->getParams(), The route contains every parameters that matched with the route.
