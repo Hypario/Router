@@ -85,7 +85,7 @@ class Router
      *
      * @return Route|null
      */
-    public function match(&$request): ?Route
+    public function match($request): ?Route
     {
         if ($request instanceof ServerRequestInterface) {
             $url = $request->getUri()->getPath();

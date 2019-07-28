@@ -85,9 +85,8 @@ class RouterTest extends TestCase
         $this->router->get('/blog', function () {
             return 'Hello World !';
         });
-        $this->router->get('/blog/{slug:[a-z]+}', function ($request) {
-            /* @var ServerRequestInterface $request */
-            return $request->getAttribute('slug');
+        $this->router->get('/blog/{slug:[a-z]+}', function () {
+            return 'aze';
         });
         // with a string as url
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -98,7 +97,7 @@ class RouterTest extends TestCase
         // with an object that implement the ServerRequestInterface
         $request = new ServerRequest('GET', '/blog/aze');
         $route = $this->router->match($request);
-        $this->assertSame('aze', \call_user_func_array($route->getHandler(), [$request]));
+        $this->assertSame('aze', \call_user_func($route->getHandler()));
     }
 
     public function testMatchMethodWithBadRequest()
