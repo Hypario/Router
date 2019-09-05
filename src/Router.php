@@ -79,7 +79,7 @@ class Router
     /**
      * Return the route that matched or null if none matched.
      *
-     * @param $request
+     * @param ServerRequestInterface|string $request
      *
      * @throws \Exception
      *
