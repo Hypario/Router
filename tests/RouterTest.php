@@ -197,4 +197,13 @@ class RouterTest extends TestCase
         $this->expectException(\Exception::class);
         $this->router->match($request);
     }
+
+    public function testHasRoute()
+    {
+        $this->router->get('/', function () {
+            return "Hello";
+        }, 'hello');
+        $this->assertTrue($this->router->hasRoute('hello'));
+        $this->assertFalse($this->router->hasRoute('helloWorld'));
+    }
 }
