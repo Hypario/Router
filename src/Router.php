@@ -12,9 +12,9 @@ class Router
      * @var array
      */
     private $routes = [
-        'GET' => [],
-        'POST' => [],
-        'PUT' => [],
+        'GET'    => [],
+        'POST'   => [],
+        'PUT'    => [],
         'DELETE' => []
     ];
 
@@ -35,8 +35,8 @@ class Router
     /**
      * Add a route in GET method.
      *
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function get(string $pattern, $handler, ?string $name = null): void
@@ -47,8 +47,8 @@ class Router
     /**
      * Add a route in POST method.
      *
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function post(string $pattern, $handler, ?string $name = null): void
@@ -57,8 +57,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function put(string $pattern, $handler, ?string $name = null): void
@@ -67,8 +67,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function delete(string $pattern, $handler, ?string $name = null): void
@@ -81,9 +81,9 @@ class Router
      *
      * @param ServerRequestInterface|string $request
      *
-     * @return Route|null
      * @throws \Exception
      *
+     * @return Route|null
      */
     public function match($request): ?Route
     {
@@ -112,12 +112,12 @@ class Router
 
     /**
      * @param string $name
-     * @param array $params
-     * @param array $queryParams
+     * @param array  $params
+     * @param array  $queryParams
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     public function getPath(string $name, array $params = [], array $queryParams = []): string
     {
@@ -139,21 +139,23 @@ class Router
     }
 
     /**
-     * return true if router have a named route
+     * return true if router have a named route.
+     *
      * @param string $name
+     *
      * @return bool
      */
     public function hasRoute(string $name)
     {
-        return array_key_exists($name, $this->namedRoute);
+        return \array_key_exists($name, $this->namedRoute);
     }
 
     /**
      * The function that add the route in the method chosen.
      *
-     * @param string $method
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $method
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      *
      * @throws \Exception
@@ -171,9 +173,9 @@ class Router
     /**
      * @param $match
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     private function replaceParams($match): string
     {

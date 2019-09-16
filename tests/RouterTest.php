@@ -201,7 +201,7 @@ class RouterTest extends TestCase
     public function testHasRoute()
     {
         $this->router->get('/', function () {
-            return "Hello";
+            return 'Hello';
         }, 'hello');
         $this->assertTrue($this->router->hasRoute('hello'));
         $this->assertFalse($this->router->hasRoute('helloWorld'));
