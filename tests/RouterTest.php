@@ -3,9 +3,8 @@
 namespace Test;
 
 use GuzzleHttp\Psr7\ServerRequest;
-use Hypario\Router;
+use Hypario\Router\Router;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 
 class RouterTest extends TestCase
 {
@@ -74,10 +73,21 @@ class RouterTest extends TestCase
     public function testRouteAlreadyExist()
     {
         $this->router->get('/blog', function () {
+            return 'I am blog';
         }, 'blog');
-        $this->expectException(\Exception::class);
         $this->router->get('/aze', function () {
+            return 'I am aze';
         }, 'blog');
+
+        $request = new ServerRequest('GET', '/blog');
+        $route = $this->router->match($request);
+
+        $this->assertSame('blog', $route->getName());
+        $this->assertSame('I am blog', $route->getHandler()());
+
+        $url = $this->router->getPath('blog');
+
+        $this->assertSame('/aze', $url);
     }
 
     public function testMatchMethod()
@@ -187,8 +197,8 @@ class RouterTest extends TestCase
 
     public function testGenerateUriWithBadName()
     {
-        $this->expectException(\Exception::class);
-        $this->router->getPath('azeaze');
+        $url = $this->router->getPath('azeaze');
+        $this->assertSame('#', $url);
     }
 
     public function testWrongMethod()

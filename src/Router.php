@@ -1,7 +1,8 @@
 <?php
 
-namespace Hypario;
+namespace Hypario\Router;
 
+use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Router
@@ -81,7 +82,7 @@ class Router
      *
      * @param ServerRequestInterface|string $request
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return Route|null
      */
@@ -94,7 +95,7 @@ class Router
             $url = $request;
             $method = $_SERVER['REQUEST_METHOD'];
         } else {
-            throw new \Exception('The request is not a string or an instance of ServerRequestInterface');
+            throw new Exception('The request is not a string or an instance of ServerRequestInterface');
         }
         if (\array_key_exists($method, $this->routes)) {
             /** @var Route $route */
@@ -104,29 +105,31 @@ class Router
                 }
             }
         } else {
-            throw new \Exception('Method not found');
+            throw new Exception('Method not found');
         }
 
         return null;
     }
 
     /**
+     * Return the url from the name of the route and the parameters.
+     *
      * @param string $name
      * @param array  $params
      * @param array  $queryParams
-     *
-     * @throws \Exception
      *
      * @return string
      */
     public function getPath(string $name, array $params = [], array $queryParams = []): string
     {
+        // if route exists
         if (\array_key_exists($name, $this->namedRoute)) {
             $pattern = $this->namedRoute[$name]->getPattern();
             if (!preg_match('#{.*?]#', $pattern)) {
                 $path = '/' . $pattern;
             } else {
-                $this->pathParams = $params;
+                $this->pathParams = $params; // params to replace
+                // if the url need parameters, replace the pattern to given params
                 $path = '/' . preg_replace_callback('#{.*?}#', [$this, 'replaceParams'], $pattern);
             }
             if (!empty($queryParams)) {
@@ -135,7 +138,8 @@ class Router
 
             return $path;
         }
-        throw new \Exception('No route matched that name.');
+
+        return '#';
     }
 
     /**
@@ -151,41 +155,43 @@ class Router
     }
 
     /**
-     * The function that add the route in the method chosen.
+     * The function that add the route in the chosen method.
      *
      * @param string      $method
      * @param string      $pattern
      * @param mixed       $handler
      * @param string|null $name
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function addRoute(string $method, string $pattern, $handler, ?string $name = null)
     {
         $this->routes[$method][$pattern] = new Route($pattern, $handler, $name);
-        if (null !== $name && !\array_key_exists($name, $this->namedRoute)) {
+        if (null !== $name) {
             $this->namedRoute[$name] = $this->routes[$method][$pattern];
-        } elseif (null !== $name && \array_key_exists($name, $this->namedRoute)) {
-            throw new \Exception('Route called ' . $name . ' already exist.');
         }
     }
 
     /**
+     * Verify if the parameter match the pattern and replace it in the route pattern.
+     *
      * @param $match
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
     private function replaceParams($match): string
     {
+        // delete all the { and }
         $param = str_replace('}', '', str_replace('{', '', $match[0]));
         $parts = explode(':', $param);
+        // if params match the pattern given
         if (\array_key_exists($parts[0], $this->pathParams)
             && preg_match("#$parts[1]#i", $this->pathParams[$parts[0]])
         ) {
             return $this->pathParams[$parts[0]];
         }
-        throw new \Exception('Parameters sent does not match the pattern');
+        throw new Exception('Parameters sent does not match the pattern');
     }
 }
