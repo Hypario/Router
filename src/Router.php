@@ -13,14 +13,14 @@ class Router
      * @var array
      */
     private $routes = [
-        'GET' => [],
-        'POST' => [],
-        'PUT' => [],
+        'GET'    => [],
+        'POST'   => [],
+        'PUT'    => [],
         'DELETE' => []
     ];
 
     /**
-     * Needed to generate prefixed route
+     * Needed to generate prefixed route.
      *
      * @var string
      */
@@ -43,8 +43,8 @@ class Router
     /**
      * Add a route in GET method.
      *
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function get(string $pattern, $handler, ?string $name = null): void
@@ -55,8 +55,8 @@ class Router
     /**
      * Add a route in POST method.
      *
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function post(string $pattern, $handler, ?string $name = null): void
@@ -65,8 +65,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function put(string $pattern, $handler, ?string $name = null): void
@@ -75,8 +75,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function delete(string $pattern, $handler, ?string $name = null): void
@@ -85,8 +85,8 @@ class Router
     }
 
     /**
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
      */
     public function any(string $pattern, $handler, ?string $name = null): void
@@ -100,7 +100,7 @@ class Router
     public function group(string $prefix, callable $callable): void
     {
         $this->prefix = $prefix;
-        call_user_func_array($callable, [$this]);
+        \call_user_func_array($callable, [$this]);
         $this->prefix = '';
     }
 
@@ -109,9 +109,9 @@ class Router
      *
      * @param ServerRequestInterface|string $request
      *
-     * @return Route|null
      * @throws Exception
      *
+     * @return Route|null
      */
     public function match($request): ?Route
     {
@@ -142,8 +142,8 @@ class Router
      * Return the url from the name of the route and the parameters.
      *
      * @param string $name
-     * @param array $params
-     * @param array $queryParams
+     * @param array  $params
+     * @param array  $queryParams
      *
      * @return string
      */
@@ -184,11 +184,10 @@ class Router
     /**
      * The function that add the route in the chosen method.
      *
-     * @param string $method
-     * @param string $pattern
-     * @param mixed $handler
+     * @param string      $method
+     * @param string      $pattern
+     * @param mixed       $handler
      * @param string|null $name
-     *
      */
     private function addRoute(string $method, string $pattern, $handler, ?string $name = null)
     {
@@ -206,9 +205,9 @@ class Router
      *
      * @param $match
      *
-     * @return string
      * @throws Exception
      *
+     * @return string
      */
     private function replaceParams($match): string
     {

@@ -103,8 +103,8 @@ class RouterTest extends TestCase
     public function testPrefixedRoute()
     {
         $this->router->group('/admin', function ($router) {
-            /** @var Router $router */
-            $router->get('/', "Hello");
+            /* @var Router $router */
+            $router->get('/', 'Hello');
             $router->get('index', 'Hello');
         });
 
@@ -161,7 +161,7 @@ class RouterTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/blog';
         $route = $this->router->match($_SERVER['REQUEST_URI']);
-        $this->assertEquals('blog', $route->getPattern());
+        $this->assertSame('blog', $route->getPattern());
         $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
 
         // with an object that implement the ServerRequestInterface
@@ -239,7 +239,7 @@ class RouterTest extends TestCase
         $uri = $this->router->getPath(
             'post.show',
             ['slug' => 'mon-article', 'id' => 18],
-            ['p' => 2]
+            ['p'    => 2]
         );
         $this->assertSame('/blog/mon-article-18?p=2', $uri);
     }
