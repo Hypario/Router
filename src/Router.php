@@ -65,6 +65,8 @@ class Router
     }
 
     /**
+     * Add a route in PUT method.
+     *
      * @param string      $pattern
      * @param mixed       $handler
      * @param string|null $name
@@ -75,6 +77,8 @@ class Router
     }
 
     /**
+     * Add a route in DELETE method.
+     *
      * @param string      $pattern
      * @param mixed       $handler
      * @param string|null $name
@@ -85,6 +89,8 @@ class Router
     }
 
     /**
+     * Add a route in GET, POST, PUT and DELETE method.
+     *
      * @param string      $pattern
      * @param mixed       $handler
      * @param string|null $name
@@ -97,6 +103,12 @@ class Router
         $this->delete($pattern, $handler, $name);
     }
 
+    /**
+     * Add the routed specified in the callable with a prefix.
+     *
+     * @param string   $prefix
+     * @param callable $callable
+     */
     public function group(string $prefix, callable $callable): void
     {
         $this->prefix = $prefix;
@@ -170,7 +182,7 @@ class Router
     }
 
     /**
-     * return true if router have a named route.
+     * return true if router have a named route that matched that name.
      *
      * @param string $name
      *
