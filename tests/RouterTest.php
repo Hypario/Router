@@ -60,14 +60,72 @@ class RouterTest extends TestCase
     public function testDeleteMethod()
     {
         $request = new ServerRequest('DELETE', '/blog');
+
         $this->router->get('/blog', function () {
         }, 'getBlog');
+
         $this->router->delete('/blog', function () {
             return 'Hello World !';
         }, 'postBlog');
+
         $route = $this->router->match($request);
+
         $this->assertSame('postBlog', $route->getName());
         $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
+    }
+
+    public function testAnyMethod()
+    {
+        $request1 = new ServerRequest('GET', '/');
+        $request2 = new ServerRequest('POST', '/');
+        $request3 = new ServerRequest('PUT', '/');
+        $request4 = new ServerRequest('DELETE', '/');
+        $this->router->any('/', 'Hello', 'index');
+
+        $route1 = $this->router->match($request1);
+        $route2 = $this->router->match($request2);
+        $route3 = $this->router->match($request3);
+        $route4 = $this->router->match($request4);
+
+        $this->assertSame('index', $route1->getName());
+        $this->assertSame('Hello', $route1->getHandler());
+
+        $this->assertSame('index', $route2->getName());
+        $this->assertSame('Hello', $route2->getHandler());
+
+        $this->assertSame('index', $route3->getName());
+        $this->assertSame('Hello', $route3->getHandler());
+
+        $this->assertSame('index', $route4->getName());
+        $this->assertSame('Hello', $route4->getHandler());
+    }
+
+    public function testPrefixedRoute()
+    {
+        $this->router->group('/admin', function ($router) {
+            /** @var Router $router */
+            $router->get('/', "Hello");
+            $router->get('index', 'Hello');
+        });
+
+        $this->router->get('/', 'Hello World !');
+
+        $request = new ServerRequest('GET', '/admin');
+        $request2 = new ServerRequest('GET', '/admin/index');
+        $request3 = new ServerRequest('GET', '/');
+
+        $route = $this->router->match($request);
+        $route2 = $this->router->match($request2);
+        $route3 = $this->router->match($request3);
+
+        $this->assertSame('admin', $route->getPattern());
+        $this->assertSame('Hello', $route->getHandler());
+
+        $this->assertSame('admin/index', $route2->getPattern());
+        $this->assertSame('Hello', $route2->getHandler());
+
+        $this->assertSame('', $route3->getPattern());
+        $this->assertSame('Hello World !', $route3->getHandler());
     }
 
     public function testRouteAlreadyExist()
@@ -87,6 +145,7 @@ class RouterTest extends TestCase
 
         $url = $this->router->getPath('blog');
 
+        // we get the last route called blog so careful
         $this->assertSame('/aze', $url);
     }
 
@@ -102,6 +161,7 @@ class RouterTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/blog';
         $route = $this->router->match($_SERVER['REQUEST_URI']);
+        $this->assertEquals('blog', $route->getPattern());
         $this->assertSame('Hello World !', \call_user_func($route->getHandler()));
 
         // with an object that implement the ServerRequestInterface
@@ -179,7 +239,7 @@ class RouterTest extends TestCase
         $uri = $this->router->getPath(
             'post.show',
             ['slug' => 'mon-article', 'id' => 18],
-            ['p'    => 2]
+            ['p' => 2]
         );
         $this->assertSame('/blog/mon-article-18?p=2', $uri);
     }
@@ -213,6 +273,7 @@ class RouterTest extends TestCase
         $this->router->get('/', function () {
             return 'Hello';
         }, 'hello');
+
         $this->assertTrue($this->router->hasRoute('hello'));
         $this->assertFalse($this->router->hasRoute('helloWorld'));
     }

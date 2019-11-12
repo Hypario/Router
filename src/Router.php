@@ -13,11 +13,18 @@ class Router
      * @var array
      */
     private $routes = [
-        'GET'    => [],
-        'POST'   => [],
-        'PUT'    => [],
+        'GET' => [],
+        'POST' => [],
+        'PUT' => [],
         'DELETE' => []
     ];
+
+    /**
+     * Needed to generate prefixed route
+     *
+     * @var string
+     */
+    private $prefix = '';
 
     /**
      * list of all the named route with the name as key and an instance of Route as value.
@@ -36,8 +43,8 @@ class Router
     /**
      * Add a route in GET method.
      *
-     * @param string      $pattern
-     * @param mixed       $handler
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
     public function get(string $pattern, $handler, ?string $name = null): void
@@ -48,8 +55,8 @@ class Router
     /**
      * Add a route in POST method.
      *
-     * @param string      $pattern
-     * @param mixed       $handler
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
     public function post(string $pattern, $handler, ?string $name = null): void
@@ -58,8 +65,8 @@ class Router
     }
 
     /**
-     * @param string      $pattern
-     * @param mixed       $handler
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
     public function put(string $pattern, $handler, ?string $name = null): void
@@ -68,8 +75,8 @@ class Router
     }
 
     /**
-     * @param string      $pattern
-     * @param mixed       $handler
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      */
     public function delete(string $pattern, $handler, ?string $name = null): void
@@ -78,13 +85,33 @@ class Router
     }
 
     /**
+     * @param string $pattern
+     * @param mixed $handler
+     * @param string|null $name
+     */
+    public function any(string $pattern, $handler, ?string $name = null): void
+    {
+        $this->get($pattern, $handler, $name);
+        $this->post($pattern, $handler, $name);
+        $this->put($pattern, $handler, $name);
+        $this->delete($pattern, $handler, $name);
+    }
+
+    public function group(string $prefix, callable $callable): void
+    {
+        $this->prefix = $prefix;
+        call_user_func_array($callable, [$this]);
+        $this->prefix = '';
+    }
+
+    /**
      * Return the route that matched or null if none matched.
      *
      * @param ServerRequestInterface|string $request
      *
+     * @return Route|null
      * @throws Exception
      *
-     * @return Route|null
      */
     public function match($request): ?Route
     {
@@ -115,8 +142,8 @@ class Router
      * Return the url from the name of the route and the parameters.
      *
      * @param string $name
-     * @param array  $params
-     * @param array  $queryParams
+     * @param array $params
+     * @param array $queryParams
      *
      * @return string
      */
@@ -157,15 +184,17 @@ class Router
     /**
      * The function that add the route in the chosen method.
      *
-     * @param string      $method
-     * @param string      $pattern
-     * @param mixed       $handler
+     * @param string $method
+     * @param string $pattern
+     * @param mixed $handler
      * @param string|null $name
      *
-     * @throws Exception
      */
     private function addRoute(string $method, string $pattern, $handler, ?string $name = null)
     {
+        // handle case we have a prefixed route
+        $pattern = !empty($this->prefix) ? $this->prefix . '/' . trim($pattern, '/') : $pattern;
+
         $this->routes[$method][$pattern] = new Route($pattern, $handler, $name);
         if (null !== $name) {
             $this->namedRoute[$name] = $this->routes[$method][$pattern];
@@ -177,9 +206,9 @@ class Router
      *
      * @param $match
      *
+     * @return string
      * @throws Exception
      *
-     * @return string
      */
     private function replaceParams($match): string
     {
