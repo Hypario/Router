@@ -27,9 +27,7 @@ class Route
     /**
      * Route constructor.
      *
-     * @param string      $pattern
-     * @param mixed       $handler
-     * @param string|null $name
+     * @param mixed $handler
      */
     public function __construct(string $pattern, $handler, ?string $name = null)
     {
@@ -38,9 +36,6 @@ class Route
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getPattern(): string
     {
         return $this->pattern;
@@ -54,9 +49,6 @@ class Route
         return $this->handler;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -71,7 +63,7 @@ class Route
     {
         $url = trim($url, '/');
         $pattern = preg_replace_callback(
-            '/{([a-zA-Z]+):([A-Za-z0-9_\-\[\]\{\}\|\\\+\*\?]+)}+?/',
+            '/{([a-zA-Z]+):([A-Za-z0-9_\-\[\]{}|\\\+*?]+)}+?/',
             [$this, 'paramMatch'],
             $this->pattern
         );

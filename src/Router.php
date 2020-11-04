@@ -35,9 +35,7 @@ class Router
     /**
      * Add a route in GET method.
      *
-     * @param string      $pattern
-     * @param mixed       $handler
-     * @param string|null $name
+     * @param mixed $handler
      */
     public function get(string $pattern, $handler, ?string $name = null): void
     {
@@ -47,9 +45,7 @@ class Router
     /**
      * Add a route in POST method.
      *
-     * @param string      $pattern
-     * @param mixed       $handler
-     * @param string|null $name
+     * @param mixed $handler
      */
     public function post(string $pattern, $handler, ?string $name = null): void
     {
@@ -57,9 +53,7 @@ class Router
     }
 
     /**
-     * @param string      $pattern
-     * @param mixed       $handler
-     * @param string|null $name
+     * @param mixed $handler
      */
     public function put(string $pattern, $handler, ?string $name = null): void
     {
@@ -67,9 +61,7 @@ class Router
     }
 
     /**
-     * @param string      $pattern
-     * @param mixed       $handler
-     * @param string|null $name
+     * @param mixed $handler
      */
     public function delete(string $pattern, $handler, ?string $name = null): void
     {
@@ -82,8 +74,6 @@ class Router
      * @param ServerRequestInterface|string $request
      *
      * @throws \Exception
-     *
-     * @return Route|null
      */
     public function match($request): ?Route
     {
@@ -111,13 +101,7 @@ class Router
     }
 
     /**
-     * @param string $name
-     * @param array  $params
-     * @param array  $queryParams
-     *
      * @throws \Exception
-     *
-     * @return string
      */
     public function getPath(string $name, array $params = [], array $queryParams = []): string
     {
@@ -141,8 +125,6 @@ class Router
     /**
      * return true if router have a named route.
      *
-     * @param string $name
-     *
      * @return bool
      */
     public function hasRoute(string $name)
@@ -153,10 +135,7 @@ class Router
     /**
      * The function that add the route in the method chosen.
      *
-     * @param string      $method
-     * @param string      $pattern
-     * @param mixed       $handler
-     * @param string|null $name
+     * @param mixed $handler
      *
      * @throws \Exception
      */
@@ -174,8 +153,6 @@ class Router
      * @param $match
      *
      * @throws \Exception
-     *
-     * @return string
      */
     private function replaceParams($match): string
     {
