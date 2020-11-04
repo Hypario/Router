@@ -11,10 +11,8 @@ class Route
      * The pattern wanted
      * Example :
      * /Route/{slug:[a-zAZ]+}.
-     *
-     * @var string
      */
-    private $pattern;
+    private string $pattern;
 
     /**
      * The var returned if the route matched.
@@ -28,14 +26,12 @@ class Route
      *
      * @var string
      */
-    private $name;
+    private ?string $name;
 
     /**
      * All the params filled whenever the route matched.
-     *
-     * @var array
      */
-    private $params = [];
+    private array $params = [];
 
     /**
      * Route constructor.

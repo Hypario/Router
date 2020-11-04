@@ -9,10 +9,8 @@ class Router
 {
     /**
      * List of all the routes sorted by methods.
-     *
-     * @var array
      */
-    private $routes = [
+    private array $routes = [
         'GET'    => [],
         'POST'   => [],
         'PUT'    => [],
@@ -21,24 +19,18 @@ class Router
 
     /**
      * Needed to generate prefixed route.
-     *
-     * @var string
      */
-    private $prefix = '';
+    private string $prefix = '';
 
     /**
      * list of all the named route with the name as key and an instance of Route as value.
-     *
-     * @var array
      */
-    private $namedRoute = [];
+    private array $namedRoute = [];
 
     /**
      * parameters needed to generate the path of the named route.
-     *
-     * @var array
      */
-    private $pathParams = [];
+    private array $pathParams = [];
 
     /**
      * Add a route in GET method.
@@ -160,10 +152,8 @@ class Router
 
     /**
      * return true if router have a named route that matched that name.
-     *
-     * @return bool
      */
-    public function hasRoute(string $name)
+    public function hasRoute(string $name): bool
     {
         return \array_key_exists($name, $this->namedRoute);
     }
