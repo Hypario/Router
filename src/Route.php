@@ -2,24 +2,37 @@
 
 namespace Hypario;
 
+/**
+ * Class Route.
+ */
 class Route
 {
     /**
+     * The pattern wanted
+     * Example :
+     * /Route/{slug:[a-zAZ]+}.
+     *
      * @var string
      */
     private $pattern;
 
     /**
+     * The var returned if the route matched.
+     *
      * @var mixed
      */
     private $handler;
 
     /**
+     * Name of the route.
+     *
      * @var string
      */
     private $name;
 
     /**
+     * All the params filled whenever the route matched.
+     *
      * @var array
      */
     private $params = [];
@@ -65,7 +78,7 @@ class Route
         $pattern = preg_replace_callback(
             '/{([a-zA-Z]+):([A-Za-z0-9_\-\[\]{}|\\\+*?]+)}+?/',
             [$this, 'paramMatch'],
-            $this->pattern
+            $this->getPattern()
         );
         $regex = "#^$pattern$#";
         if (!preg_match($regex, $url, $matches)) {
