@@ -95,12 +95,12 @@ I can now generate an uri to my index which will return `/`
 $pathToIndex = $router->getPath('index');
 ```
 
-It also works for routes with parameters, you only need to add the parameter to the function
+It also works for routes with parameters, you only need to add the array of parameters to the function
 
 ```php
 $router->get('/articles/{id:[0-9]+}', 'handler', 'article');
 
-$pathToArticle = $router->getPath('article', 1); 
+$pathToArticle = $router->getPath('article', ["id" => 1]); 
 // returns /articles/1
 ```
 
